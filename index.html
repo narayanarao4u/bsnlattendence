@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSNL Vizag</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <style>
+      button{
+        background-color: #4CAF50; /* Green */
+      }
+    </style>
+    </head>
+<body>
+    <div data-role="page" id="page1">
+        <div data-role="header">
+         <h1>BSNL visakhapatnam</h1>
+        </div>   
+        <div data-role="main" class="ui-content">
+            <h1>Hello <span id="wName"></span></h1>
+            <p id="demo">test</p>
+            <br>
+            <br>
+            <br>
+            <br>
+            <button id="btn0" data-icon="check" 
+            style="background:  #4CAF50; color: white;"> Submit</button>
+
+         
+        </div>
+        <div data-role="footer">
+        <h1>&copy; BSNL Vizag</h1>
+        </div> 
+    </div>
+    <div data-role="page" id="page2">
+        <div data-role="header">
+         <h1>BSNL visakhapatnam</h1>
+        </div>   
+        <div data-role="main" class="ui-content">
+            <label>Enter HRNO</label> <input type="text" id="hrno">
+            <label>Name</label> <input type="text" id="empname">
+            <label>DESGN</label> <input type="text" id="desgn">
+            <label>Mobile No</label> <input type="text" id="phone">
+            <button id="btn1" data-icon="check" 
+            style="background:  #4CAF50; color: white;"> Submit</button>
+         
+        </div>
+        <div data-role="footer">
+        <h1>&copy; BSNL Vizag</h1>
+        </div> 
+    </div>
+    <script>
+        var x = document.getElementById("demo");
+        
+        function getLocation() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+            
+          } else { 
+            x.innerHTML = "Geolocation is not supported by this browser.";
+          }
+        }
+        
+        function showPosition(position) {
+          x.innerHTML = "Latitude: " + position.coords.latitude + 
+          "<br>Longitude: " + position.coords.longitude;         
+        }
+
+        getLocation();
+
+        if(localStorage.getItem("empname") === null) {  
+          $.mobile.navigate( "#page2" );
+        }
+        else{
+          $('#wName').html(localStorage.getItem("empname"))
+        }
+
+        $('#btn0').click(function(){
+          $.post("http://vizagsmartservices.com/testPost.php", {suggest: "txt"}, function(result){
+              $("span").html(result);
+            });
+        })
+
+        $('#btn1').click(function(){
+          var empname = $('#empname').val();
+          var hrno = $('#hrno').val();
+          var desgn = $('#desgn').val();
+          var phone = $('#phone').val();
+          console.log(empname);
+          localStorage.setItem('empname',empname);
+          localStorage.setItem('hrno',hrno);
+          localStorage.setItem('desgn',desgn);
+          localStorage.setItem('phone',phone);
+        })
+        </script>
+</body>
+</html>
